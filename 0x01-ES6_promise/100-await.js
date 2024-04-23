@@ -8,14 +8,14 @@ export default async function asyncUploadUser () {
 
     return {
       photo: pic,
-      user
+      user,
     };
   } catch (error) {
     console.error(error);
 
     return {
       photo: null,
-      user: null
+      user: null,
     };
   }
 }
