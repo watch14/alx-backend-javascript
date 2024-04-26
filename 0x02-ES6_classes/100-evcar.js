@@ -6,7 +6,7 @@ export default class EVCar extends Car {
     this._range = range;
   }
 
-  static get [Symbol.species]() {
+  static get () {
     return Car;
   }
 }
