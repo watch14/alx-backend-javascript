@@ -50,3 +50,5 @@ export function executeWork(employee: ((Director | Teacher))) {
     return (employee as Director).workDirectorTasks();
   }
   return (employee as Teacher).workTeacherTasks();
+}
+
