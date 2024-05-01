@@ -1,50 +1,42 @@
-interface Teacher {
-  firstName: string;
-  lastName: string;
-  fullTimeEmployee: boolean;
-  yearsOfExperience?: number;
-  location: string;
-  [key: string]: any;
+interface DirectorInterface {
+  workFromHome: string;
+  getCoffeeBreak: string;
+  workDirectorTasks: string;
 }
 
-export interface Directors extends Teacher {
-  numberOfReports: number;
+interface TeacherInterface {
+  workFromHome: string;
+  getCoffeeBreak: string;
+  workDirectorTasks: string;
 }
 
-export interface printTeacherFunction {
-  (firstName: string, lastName: string): string;
-}
-
-
-///////// class
-
-class StudentClass implements StudentClassInterface {
-  private firstName: string;
-  private lastName: string;
-
-  constructor(student: Student) {
-    this.firstName = student.firstName;
-    this.lastName = student.lastName;
+export class Director implements DirectorInterface {
+  workFromHome() {
+    return 'Working from home'
   }
-
-  workOnHomework(): string {
-    return "Currently working";
+  getToWork() {
+    return 'Getting a coffee break'
   }
-
-  displayName(): string {
-    return this.firstName;
+  workDirectorTasks() {
+    return 'Getting to director tasks'
   }
 }
 
+export class Teacher implements TeacherInterface {
+  workFromHome() {
+    return 'Cannot work from home'
+  }
+  getCoffeeBreak() {
+    return 'Cannot have a break'
+  }
+  workTeacherTasks() {
+    return 'Getting to work'
+  }
+}
 
-///////////// test
-
-const teacher3: Teacher = {
-  firstName: 'John',
-  fullTimeEmployee: false,
-  lastName: 'Doe',
-  location: 'London',
-  contract: false,
-};
-
-console.log(teacher3);
+export function createEmployee(salary: (number | string)): (Director | Teacher) {
+  if (typeof salary === 'number' && salary < 500) {
+    return new Teacher()
+  }
+  return new Director()
+}
