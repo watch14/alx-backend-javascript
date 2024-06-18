@@ -1,8 +1,10 @@
 /**
  *  errrrr
  * print msj
-**/
+*/
 // displau msj
-module.exports = function displayMessage (msj) {
+function displayMessage (msj) {
   console.log(msj);
-};
+}
+
+module.exports = displayMessage;
