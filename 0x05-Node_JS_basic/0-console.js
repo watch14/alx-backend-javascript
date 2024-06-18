@@ -1,5 +1,3 @@
-function displayMessage (msj) {
+module.exports = function displayMessage (msj) {
   console.log(msj);
-}
-
-module.exports = displayMessage;
+};
