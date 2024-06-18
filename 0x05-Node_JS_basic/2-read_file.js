@@ -2,12 +2,14 @@ const fs = require('fs');
 
 const countStudents = (path) => {
   try {
+    // Read the file synchronously
     const data = fs.readFileSync(path, 'utf-8').trim();
     const lines = data.split('\n');
 
-    // Remove empty lines after trimming
+    // Filter out empty lines
     const students = lines.filter(line => line.trim() !== '');
 
+    // If only header or no lines present
     if (students.length <= 1) {
       console.log('Number of students: 0');
       return;
