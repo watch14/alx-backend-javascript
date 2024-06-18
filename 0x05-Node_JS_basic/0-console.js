@@ -1,5 +1,5 @@
 /**
- *  errrrr 
+ *  errrrr
  * print msj
 **/
 // displau msj
