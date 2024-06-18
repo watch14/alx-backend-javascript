@@ -24,7 +24,7 @@ const countStudents = (dataPath) => {
     }
 
     for (const field in fields) {
-      if (fields.hasOwnProperty(field)) {
+      if (Object.hasOwn(fields, field)) {
         const studentList = fields[field];
         console.log(`Number of students in ${field}: ${studentList.length}. List: ${studentList.join(', ')}`);
       }
