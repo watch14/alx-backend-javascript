@@ -9,16 +9,16 @@
         "test": "./node_modules/mocha/bin/mocha --require babel-register --exit",
         "dev": "nodemon --exec babel-node --presets babel-preset-env ./full_server/server.js ./database.csv"
     },
-    "author": "",
+    "author": "Maamoun(watch14)",
     "license": "ISC",
     "dependencies": {
-        "@babel/node": "^7.24.7",
         "chai-http": "^4.3.0",
         "csv-parser": "^3.0.0",
         "express": "^4.19.2"
     },
     "devDependencies": {
         "@babel/core": "^7.24.7",
+        "@babel/node": "^7.24.7",
         "@babel/preset-env": "^7.24.7",
         "babel-cli": "^6.26.0",
         "babel-node": "0.0.1-security",
