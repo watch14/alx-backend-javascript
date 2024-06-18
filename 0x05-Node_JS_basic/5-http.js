@@ -1,6 +1,7 @@
 const http = require('http');
+const fs = require('fs').promises;
 
-const app = http.createServer((req, res) => {
+const app = http.createServer(async (req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
 
@@ -14,35 +15,38 @@ const app = http.createServer((req, res) => {
       return;
     }
 
-    const fs = require('fs');
-    const students = [];
-    const csStudents = [];
-    const sweStudents = [];
+    try {
+      const data = await fs.readFile(database, 'utf-8');
+      const lines = data.trim().split('\n').filter(line => line.trim() !== '');
 
-    fs.readFile(database, 'utf-8', (err, data) => {
-      if (err) {
-        res.statusCode = 500;
-        res.end('Error: Cannot load the database');
+      if (lines.length <= 1) {
+        res.write('This is the list of our students\n');
+        res.end('Number of students: 0');
         return;
       }
 
-      const lines = data.split('\n').filter(line => line !== '');
-      lines.slice(1).forEach(line => {
-        const [firstname,,, field] = line.split(',');
+      const students = [];
+      const csStudents = [];
+      const sweStudents = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const [firstname, , , field] = lines[i].split(',');
         students.push(firstname);
         if (field === 'CS') {
           csStudents.push(firstname);
         } else if (field === 'SWE') {
           sweStudents.push(firstname);
         }
-      });
+      }
 
       res.write('This is the list of our students\n');
       res.write(`Number of students: ${students.length}\n`);
       res.write(`Number of students in CS: ${csStudents.length}. List: ${csStudents.join(', ')}\n`);
-      res.write(`Number of students in SWE: ${sweStudents.length}. List: ${sweStudents.join(', ')}`);
-      res.end();
-    });
+      res.end(`Number of students in SWE: ${sweStudents.length}. List: ${sweStudents.join(', ')}`);
+    } catch (err) {
+      res.statusCode = 500;
+      res.end('Error: Cannot load the database');
+    }
   } else {
     res.statusCode = 404;
     res.end('Not Found');
