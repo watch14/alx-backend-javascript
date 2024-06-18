@@ -9,12 +9,12 @@ const app = http.createServer(async (req, res) => {
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
     try {
-      const dataPath = process.argv[2];
+      const dataPath = process.argv[2]; // Assuming database file path is passed as argument
       const data = await fs.readFile(dataPath, 'utf-8');
       const lines = data.trim().split('\n').filter(line => line.trim() !== '');
 
       if (lines.length === 0) {
-        res.end('Number of students: 0');
+        res.end('No students found in the database.');
         return;
       }
 
@@ -35,7 +35,9 @@ const app = http.createServer(async (req, res) => {
         }
       }
 
-      let response = `Number of students: ${students.length}\n`;
+      let response = 'This is the list of our students\n';
+
+      response += `Number of students: ${students.length}\n`;
 
       for (const field in fields) {
         if (Object.hasOwnProperty.call(fields, field)) {
