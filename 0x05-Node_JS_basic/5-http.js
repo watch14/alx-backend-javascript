@@ -8,44 +8,47 @@ const app = http.createServer(async (req, res) => {
   if (req.url === '/') {
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
-    const database = process.argv[2];
-    if (!database) {
-      res.statusCode = 400;
-      res.end('Error: Database file not provided');
-      return;
-    }
-
     try {
-      const data = await fs.readFile(database, 'utf-8');
+      const dataPath = process.argv[2];
+      const data = await fs.readFile(dataPath, 'utf-8');
       const lines = data.trim().split('\n').filter(line => line.trim() !== '');
 
-      if (lines.length <= 1) {
-        res.write('This is the list of our students\n');
+      if (lines.length === 0) {
         res.end('Number of students: 0');
         return;
       }
 
       const students = [];
-      const csStudents = [];
-      const sweStudents = [];
+      const fields = {};
 
-      for (let i = 1; i < lines.length; i++) {
-        const [firstname, , , field] = lines[i].split(',');
-        students.push(firstname);
-        if (field === 'CS') {
-          csStudents.push(firstname);
-        } else if (field === 'SWE') {
-          sweStudents.push(firstname);
+      for (let i = 0; i < lines.length; i++) {
+        const parts = lines[i].split(',');
+        if (parts.length >= 4) {
+          const firstname = parts[0].trim();
+          const field = parts[3].trim();
+          students.push({ firstname, field });
+
+          if (!fields[field]) {
+            fields[field] = [];
+          }
+          fields[field].push(firstname);
         }
       }
 
-      res.write('This is the list of our students\n');
-      res.write(`Number of students: ${students.length}\n`);
-      res.write(`Number of students in CS: ${csStudents.length}. List: ${csStudents.join(', ')}\n`);
-      res.end(`Number of students in SWE: ${sweStudents.length}. List: ${sweStudents.join(', ')}`);
+      let response = `Number of students: ${students.length}\n`;
+
+      for (const field in fields) {
+        if (Object.hasOwnProperty.call(fields, field)) {
+          const studentList = fields[field];
+          response += `Number of students in ${field}: ${studentList.length}. List: ${studentList.join(', ')}\n`;
+        }
+      }
+
+      res.end(response);
     } catch (err) {
+      console.error('Error:', err.message);
       res.statusCode = 500;
-      res.end('Error: Cannot load the database');
+      res.end('Internal Server Error');
     }
   } else {
     res.statusCode = 404;
