@@ -21,5 +21,4 @@ describe('calculateNumber', function () {
   it('should return 0 when inputs are -0.1 and 0.1', function () {
     assert.strictEqual(calculateNumber(-0.1, 0.1), 0);
   });
-
 });
